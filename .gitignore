@@ -1,0 +1,12 @@
+node_modules
+.env
+<<<<<<< HEAD
+distnode_modules 
+*.pdf 
+*.xlsx 
+node_modules 
+*.pdf 
+*.xlsx 
+=======
+dist
+>>>>>>> f2e1b90 (UI improvements and backend updates)

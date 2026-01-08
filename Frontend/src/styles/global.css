@@ -1,0 +1,22 @@
+.btn {
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: #1e3c72;
+  color: white;
+}
+
+.btn-danger {
+  background: #d9534f;
+  color: white;
+}
+
+.btn-success {
+  background: #5cb85c;
+  color: white;
+}
