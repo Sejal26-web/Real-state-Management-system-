@@ -1,12 +1,39 @@
 const mongoose = require("mongoose");
 
+const paymentSchema = new mongoose.Schema(
+  {
+    amount: {
+      type: Number,
+      required: true,
+      min: 1
+    },
+    type: {
+      type: String,
+      enum: ["Token", "Installment"],
+      required: true
+    },
+    paidOn: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  { _id: false }
+);
+
 const saleSchema = new mongoose.Schema(
   {
+    /* 🔑 CLIENT (USER) */
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
+
     property: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Property",
       required: true,
-      unique: true //Prevent duplicate sales for same property (TC-20)
+      unique: true
     },
 
     buyer: {
@@ -21,10 +48,21 @@ const saleSchema = new mongoose.Schema(
       required: true
     },
 
+    stage: {
+      type: String,
+      enum: ["Negotiation", "Agreement", "Registration"],
+      default: "Negotiation"
+    },
+
+    status: {
+      type: String,
+      enum: ["InProgress", "Completed", "Cancelled"],
+      default: "InProgress"
+    },
+
     tokenAmount: {
       type: Number,
-      required: true,
-      min: 1 // TC-17
+      required: true
     },
 
     totalAmount: {
@@ -32,16 +70,13 @@ const saleSchema = new mongoose.Schema(
       required: true
     },
 
-    paidAmount: {
-      type: Number,
-      default: 0
+    payments: {
+      type: [paymentSchema],
+      default: []
     },
 
-    status: {
-      type: String,
-      enum: ["In Progress", "Completed", "Cancelled"],
-      default: "In Progress"
-    }
+    registrationDate: Date,
+    remarks: String
   },
   { timestamps: true }
 );

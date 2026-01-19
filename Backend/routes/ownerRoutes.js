@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const protect = require("../Middleware/AuthMiddleware");
+
+const { protect, authorize } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload");
+
 const {
   createOwner,
   getOwners,
@@ -9,10 +12,44 @@ const {
   deleteOwner
 } = require("../controllers/ownerController");
 
-router.post("/", protect(["admin"]), createOwner);
-router.get("/", protect(["admin", "agent"]), getOwners);
-router.get("/:id", protect(["admin", "agent"]), getOwnerById);
-router.put("/:id", protect(["admin"]), updateOwner);
-router.delete("/:id", protect(["admin"]), deleteOwner);
+// ================= CREATE (with file upload) =================
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  upload.array("documents"),
+  createOwner
+);
+
+// ================= READ =================
+router.get(
+  "/",
+  protect,
+  authorize("admin"),
+  getOwners
+);
+
+router.get(
+  "/:id",
+  protect,
+  authorize("admin"),
+  getOwnerById
+);
+
+// ================= UPDATE =================
+router.put(
+  "/:id",
+  protect,
+  authorize("admin"),
+  updateOwner
+);
+
+// ================= DELETE =================
+router.delete(
+  "/:id",
+  protect,
+  authorize("admin"),
+  deleteOwner
+);
 
 module.exports = router;

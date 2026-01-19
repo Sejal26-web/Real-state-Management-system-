@@ -1,0 +1,135 @@
+/* ===============================
+   PAGE LAYOUT
+=============================== */
+.sale-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 28px;
+}
+
+/* ===============================
+   TITLE
+=============================== */
+.sale-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 26px;
+}
+
+/* ===============================
+   CARD
+=============================== */
+.sale-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+}
+
+/* ===============================
+   GRID (DEFENSIVE)
+=============================== */
+.sale-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px 26px;
+}
+
+/* ===============================
+   INPUTS & SELECTS (GLOBAL)
+=============================== */
+.sale-card input,
+.sale-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+.sale-card input:focus,
+.sale-card select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===============================
+   READONLY INPUTS
+=============================== */
+.sale-card input[readonly] {
+  background-color: #f3f4f6;
+  border: 1px dashed #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   WORKFLOW FORM FIX
+=============================== */
+.sale-card form,
+.sale-card > form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.sale-card form select {
+  min-width: 220px;
+}
+
+/* ===============================
+   BUTTONS (AUTO FIX)
+=============================== */
+.sale-card button {
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.sale-card button:hover {
+  background: #1e4fd6;
+}
+
+.sale-card button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   OUTSTANDING BALANCE
+=============================== */
+.sale-container p {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #92400e;
+  background: #fef3c7;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid #fde68a;
+  display: inline-block;
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media (max-width: 768px) {
+  .sale-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sale-card form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

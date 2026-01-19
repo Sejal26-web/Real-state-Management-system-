@@ -1,37 +1,45 @@
 const express = require("express");
 const router = express.Router();
 
-const protect = require("../Middleware/AuthMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 
 const {
   createLead,
-  assignLead,
-  updateStatus,
-  scheduleSiteVisit,
   getLeads,
-  convertLead
+  getLeadById,
+  updateLead,
+  deleteLead,
+  assignLead,
+  convertLead,
+  scheduleSiteVisit,
+  addActivity
 } = require("../controllers/leadController");
 
-// =======================
-// Lead Routes
-// =======================
+/* ================= GET LEADS ================= */
+router.get("/", protect, getLeads);
 
-// Create Lead (Admin, Agent)
-router.post("/create", protect(["admin", "agent"]), createLead);
+/* ================= CREATE LEAD ================= */
+router.post("/", protect, createLead);
 
-// Assign Lead (Admin only)
-router.put("/assign/:id", protect(["admin"]), assignLead);
+/* ================= SINGLE LEAD ================= */
+router.get("/:id", protect, getLeadById);
 
-// Update Lead Status (Admin, Agent)
-router.put("/status/:id", protect(["admin", "agent"]), updateStatus);
+/* ================= UPDATE ================= */
+router.put("/:id", protect, updateLead);
 
-// Schedule Site Visit (Admin, Agent)
-router.post("/:id/site-visit", protect(["admin", "agent"]), scheduleSiteVisit);
+/* ================= ASSIGN ================= */
+router.put("/:id/assign", protect, assignLead);
 
-// Get All Leads (Admin, Agent)
-router.get("/", protect(["admin", "agent"]), getLeads);
+/* ================= SITE VISIT ================= */
+router.post("/:id/site-visit", protect, scheduleSiteVisit);
 
-// Convert Lead to Customer (Admin, Agent)
-router.post("/convert/:id", protect(["admin", "agent"]), convertLead);
+/* ================= ACTIVITY ================= */
+router.post("/:id/activity", protect, addActivity);
+
+/* ================= CONVERT ================= */
+router.post("/:id/convert", protect, convertLead);
+
+/* ================= DELETE ================= */
+router.delete("/:id", protect, deleteLead);
 
 module.exports = router;

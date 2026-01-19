@@ -1,17 +1,16 @@
 const mongoose = require("mongoose");
 
-const siteVisitSchema = new mongoose.Schema(
+const activitySchema = new mongoose.Schema(
   {
-    visitDate: {
-      type: Date,
+    type: {
+      type: String,
       required: true
     },
-    propertyId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Property"
+    description: {
+      type: String,
+      required: true
     },
-    remarks: String,
-    createdAt: {
+    date: {
       type: Date,
       default: Date.now
     }
@@ -36,29 +35,43 @@ const leadSchema = new mongoose.Schema(
     },
 
     source: {
-      type: String,
-      enum: ["Website", "Phone", "Walk-in"],
-      required: true
+      type: String
     },
 
     status: {
       type: String,
-      enum: ["New", "Contacted", "Site Visit Scheduled", "Converted"],
       default: "New"
     },
 
-    notes: [String],
-
-    agent: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+    requirementType: {
+      type: String
     },
 
-    siteVisits: [siteVisitSchema],
+    assignedClient: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null
+    },
 
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer"
+    },
+
+    siteVisit: {
+      property: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Property"
+      },
+      date: {
+        type: Date
+      }
+    },
+
+    activities: [activitySchema],
+
+    convertedAt: {
+      type: Date
     }
   },
   { timestamps: true }

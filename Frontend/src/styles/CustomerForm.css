@@ -1,0 +1,50 @@
+/* =========================
+   CUSTOMER LIST ACTION BUTTONS
+========================= */
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Base button */
+.action-btn {
+  padding: 8px 18px;
+  border-radius: 999px; /* pill shape */
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* VIEW */
+.action-view {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.action-view:hover {
+  background: #1e40af;
+}
+
+/* EDIT */
+.action-edit {
+  background: #e5e7eb;
+  color: #0f172a;
+}
+
+.action-edit:hover {
+  background: #d1d5db;
+}
+
+/* DELETE */
+.action-delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.action-delete:hover {
+  background: #fecaca;
+}

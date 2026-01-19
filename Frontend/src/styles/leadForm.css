@@ -1,0 +1,94 @@
+/* ===============================
+   CREATE / EDIT LEAD FORM
+=============================== */
+
+.lead-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 28px;
+}
+
+.lead-header {
+  margin-bottom: 24px;
+}
+
+.lead-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.lead-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+/* ===============================
+   FORM CARD
+=============================== */
+.lead-card {
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   FORM GRID
+=============================== */
+.lead-table {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px 30px;
+}
+
+.lead-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.lead-row label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.lead-row input,
+.lead-row select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+/* ===============================
+   ACTION BAR
+=============================== */
+.lead-action-bar {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

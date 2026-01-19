@@ -1,22 +1,139 @@
-.btn {
-  padding: 8px 14px;
-  border-radius: 5px;
+/* =========================
+   Page Layout (CRUD Pages ONLY)
+========================= */
+
+.page-container {
+  padding: 20px 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Table Styling (SCOPED)
+   ⚠️ Will NOT affect Dashboard
+========================= */
+
+.page-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.page-container thead th {
+  background-color: #f3f4f6;
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.page-container tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.page-container tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Column widths for better alignment */
+.page-container th:nth-child(1),
+.page-container td:nth-child(1) { width: 18%; }
+
+.page-container th:nth-child(2),
+.page-container td:nth-child(2) { width: 16%; }
+
+.page-container th:nth-child(3),
+.page-container td:nth-child(3) { width: 12%; }
+
+.page-container th:nth-child(4),
+.page-container td:nth-child(4) { width: 34%; }
+
+.page-container th:nth-child(5),
+.page-container td:nth-child(5) { width: 20%; }
+
+/* =========================
+   Buttons (SCOPED)
+========================= */
+
+.page-container .btn {
+  padding: 6px 12px;
+  border-radius: 4px;
   border: none;
   cursor: pointer;
   font-weight: 500;
+  font-size: 13px;
+  line-height: 1.4;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
-.btn-primary {
+.page-container .btn-primary {
   background: #1e3c72;
-  color: white;
+  color: #ffffff;
 }
 
-.btn-danger {
+.page-container .btn-danger {
   background: #d9534f;
-  color: white;
+  color: #ffffff;
 }
 
-.btn-success {
+.page-container .btn-success {
   background: #5cb85c;
-  color: white;
+  color: #ffffff;
+}
+
+.page-container .btn:hover {
+  opacity: 0.9;
+}
+
+/* Space between buttons in table */
+.page-container td .btn {
+  margin-right: 6px;
+}
+
+/* =========================
+   GLOBAL RESET (SAFE)
+   These are OK globally
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Prevent inputs from stretching weirdly */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Keep checkboxes inline */
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Labels stay inline by default */
+label {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Body base styles */
+body {
+  font-family: "Inter", Arial, sans-serif;
+  background-color: #f4f6fb;
+  color: #1f2937;
 }

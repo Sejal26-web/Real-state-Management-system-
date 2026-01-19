@@ -14,6 +14,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔥 SERVE UPLOADED FILES
+app.use("/uploads", express.static("uploads"));
+
 // =======================
 // Routes (ALL IMPORTS)
 // =======================
@@ -26,10 +29,23 @@ const saleRoutes = require("./routes/saleRoutes");
 const leadRoutes = require("./routes/leadRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 
-// 🔹 NEW REPORTING ROUTES
+// 🔹 REPORTING ROUTES
 const reportRoutes = require("./routes/reportRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 const quotationRoutes = require("./routes/quotationRoutes");
+
+// 🔥 DOCUMENT ROUTES
+const propertyDocumentRoutes = require("./routes/propertyDocumentRoutes");
+const ownerDocumentRoutes = require("./routes/ownerDocumentRoutes");
+
+// 🔥 RENT PAYMENT ROUTES
+const rentPaymentRoutes = require("./routes/rentPaymentRoutes");
+
+// ✅ CLIENT DASHBOARD ROUTES
+const clientRoutes = require("./routes/clientRoutes");
+
+// ✅ USERS ROUTES (🔥 THIS WAS MISSING)
+const userRoutes = require("./routes/userRoutes");
 
 // =======================
 // Route Registration
@@ -47,6 +63,19 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/quotations", quotationRoutes);
+
+// 🔥 DOCUMENT APIs
+app.use("/api/property-documents", propertyDocumentRoutes);
+app.use("/api/owner-documents", ownerDocumentRoutes);
+
+// 🔥 RENT PAYMENTS API
+app.use("/api/rent-payments", rentPaymentRoutes);
+
+// ✅ CLIENT DASHBOARD API
+app.use("/api/client", clientRoutes);
+
+// ✅ USERS API (🔥 REQUIRED FOR ASSIGN LEAD)
+app.use("/api/users", userRoutes);
 
 // =======================
 // Server

@@ -1,0 +1,38 @@
+.toast {
+  position: fixed;           /* ✅ FLOATING */
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+
+  min-width: 260px;
+  padding: 14px 18px;
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  animation: slideIn 0.25s ease-out;
+}
+
+/* COLORS */
+.toast-success {
+  background: #22c55e; /* green */
+}
+
+.toast-error {
+  background: #ef4444; /* red */
+}
+
+/* ANIMATION */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

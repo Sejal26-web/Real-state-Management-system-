@@ -1,0 +1,24 @@
+.lead-view-container {
+  padding: 20px;
+}
+
+.lead-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.assign-box {
+  margin-top: 20px;
+}
+
+.assign-box select {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.assign-box button {
+  padding: 8px 14px;
+  cursor: pointer;
+}

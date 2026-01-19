@@ -1,34 +1,67 @@
 const express = require("express");
 const router = express.Router();
-const protect = require("../Middleware/AuthMiddleware");
+
+const { protect, authorize } = require("../middleware/authMiddleware");
 
 const {
   createSale,
+  getSales,
+  getSaleById,
+  updateSale,
   addPayment,
-  closeSale,
-  getSales
+  deleteSale
 } = require("../controllers/saleController");
 
-/**
- * 16️⃣ Create sale
- * 17️⃣ Token amount validation
- * 20️⃣ Prevent duplicate sale
- */
-router.post("/", protect(["admin"]), createSale);
+/* ===============================
+   SALES ROUTES
+=============================== */
 
-/**
- * Get all sales
- */
-router.get("/", protect(["admin", "agent"]), getSales);
+// CREATE SALE (ADMIN ONLY)
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  createSale
+);
 
-/**
- * 18️⃣ Add installment payment
- */
-router.post("/:id/payment", protect(["admin"]), addPayment);
+// GET ALL SALES (ADMIN ONLY)
+router.get(
+  "/",
+  protect,
+  authorize("admin"),
+  getSales
+);
 
-/**
- * 19️⃣ Close sale & mark property sold
- */
-router.post("/:id/close", protect(["admin"]), closeSale);
+// GET SINGLE SALE
+router.get(
+  "/:id",
+  protect,
+  authorize("admin"),
+  getSaleById
+);
+
+// UPDATE SALE
+router.put(
+  "/:id",
+  protect,
+  authorize("admin"),
+  updateSale
+);
+
+// ADD PAYMENT
+router.post(
+  "/:id/payments",
+  protect,
+  authorize("admin"),
+  addPayment
+);
+
+// DELETE SALE
+router.delete(
+  "/:id",
+  protect,
+  authorize("admin"),
+  deleteSale
+);
 
 module.exports = router;

@@ -1,125 +1,174 @@
 const Sale = require("../models/Sale");
 const Property = require("../models/Property");
 
-/**
- * 16️⃣ CREATE SALE
- * 17️⃣ TOKEN AMOUNT VALIDATION
- * 20️⃣ PREVENT DUPLICATE SALES
- */
+/* ================= CREATE SALE ================= */
 exports.createSale = async (req, res) => {
   try {
-    const { property, buyer, seller, tokenAmount, totalAmount } = req.body;
+    const { propertyId, buyerId, sellerId, tokenAmount, totalAmount } = req.body;
 
-    if (!tokenAmount || tokenAmount <= 0) {
-      return res.status(400).json({ message: "Token amount required" });
+    if (!propertyId || !buyerId || !sellerId || !tokenAmount || !totalAmount) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingSale = await Sale.findOne({ property });
-    if (existingSale) {
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    if (property.status !== "Available") {
       return res.status(400).json({
-        message: "Sale already exists for this property"
+        message: "Only available properties can be sold"
       });
     }
 
     const sale = await Sale.create({
-      property,
-      buyer,
-      seller,
-      tokenAmount,
-      totalAmount,
-      paidAmount: tokenAmount
+      property: propertyId,
+      buyer: buyerId,
+      seller: sellerId,
+      stage: "Negotiation",
+      status: "InProgress",
+      tokenAmount: Number(tokenAmount),
+      totalAmount: Number(totalAmount),
+      payments: [
+        {
+          amount: Number(tokenAmount),
+          type: "Token"
+        }
+      ]
     });
 
-    await Property.findByIdAndUpdate(property, {
-      status: "Under Negotiation"
-    });
+    property.status = "Sold";
+    await property.save();
 
-    res.status(201).json({
-      message: "Sale created successfully",
-      sale
-    });
+    res.status(201).json({ success: true, data: sale });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
-/**
- * 18️⃣ ADD INSTALLMENT PAYMENT
- */
-exports.addPayment = async (req, res) => {
-  try {
-    const sale = await Sale.findById(req.params.id);
-    if (!sale) {
-      return res.status(404).json({ message: "Sale not found" });
-    }
-
-    if (req.body.amount <= 0) {
-      return res.status(400).json({ message: "Invalid payment amount" });
-    }
-
-    sale.paidAmount += req.body.amount;
-    await sale.save();
-
-    const outstandingAmount = sale.totalAmount - sale.paidAmount;
-
-    res.status(200).json({
-      message: "Payment added",
-      paidAmount: sale.paidAmount,
-      outstandingAmount
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-/**
- * 19️⃣ CLOSE SALE
- */
-exports.closeSale = async (req, res) => {
-  try {
-    const sale = await Sale.findById(req.params.id);
-    if (!sale) {
-      return res.status(404).json({ message: "Sale not found" });
-    }
-
-    if (sale.paidAmount < sale.totalAmount) {
-      return res.status(400).json({
-        message: "Full payment required before closing sale"
-      });
-    }
-
-    sale.status = "Completed";
-    await sale.save();
-
-    await Property.findByIdAndUpdate(sale.property, {
-      status: "Sold"
-    });
-
-    res.status(200).json({
-      message: "Sale closed successfully",
-      sale
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-/**
- * GET ALL SALES
- */
+/* ================= GET ALL SALES ================= */
 exports.getSales = async (req, res) => {
   try {
     const sales = await Sale.find()
       .populate("property")
       .populate("buyer")
+      .populate("seller")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: sales
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* ================= GET SALE BY ID ================= */
+exports.getSaleById = async (req, res) => {
+  try {
+    const sale = await Sale.findById(req.params.id)
+      .populate("property")
+      .populate("buyer")
       .populate("seller");
 
-    const enrichedSales = sales.map(sale => ({
-      ...sale.toObject(),
-      outstandingAmount: sale.totalAmount - sale.paidAmount
-    }));
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
 
-    res.status(200).json(enrichedSales);
+    res.status(200).json({
+      success: true,
+      data: sale
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+/* ================= UPDATE SALE (WORKFLOW) ================= */
+exports.updateSale = async (req, res) => {
+  try {
+    const sale = await Sale.findById(req.params.id);
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+
+    const { stage, status, registrationDate, remarks } = req.body;
+
+    sale.stage = stage || sale.stage;
+    sale.status = status || sale.status;
+
+    if (status === "Completed") {
+      if (!registrationDate) {
+        return res.status(400).json({
+          message: "Registration date is required"
+        });
+      }
+      sale.registrationDate = registrationDate;
+      sale.remarks = remarks || "";
+    }
+
+    await sale.save();
+
+    res.status(200).json({
+      success: true,
+      data: sale
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+/* ================= ADD PAYMENT ================= */
+exports.addPayment = async (req, res) => {
+  try {
+    const { amount, type } = req.body;
+
+    if (!amount || Number(amount) <= 0) {
+      return res.status(400).json({ message: "Invalid payment amount" });
+    }
+
+    const sale = await Sale.findById(req.params.id);
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+
+    sale.payments.push({
+      amount: Number(amount),
+      type
+    });
+
+    await sale.save();
+
+    res.status(200).json({
+      success: true,
+      data: sale
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+/* ================= DELETE SALE ================= */
+exports.deleteSale = async (req, res) => {
+  try {
+    const sale = await Sale.findById(req.params.id);
+    if (!sale) {
+      return res.status(404).json({ message: "Sale not found" });
+    }
+
+    const property = await Property.findById(sale.property);
+    if (property) {
+      property.status = "Available";
+      await property.save();
+    }
+
+    await sale.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: "Sale deleted successfully"
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

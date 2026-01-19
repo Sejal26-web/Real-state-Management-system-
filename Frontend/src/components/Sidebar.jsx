@@ -1,84 +1,68 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  /* =========================
+     REDIRECT IF NOT LOGGED IN
+  ========================= */
+  useEffect(() => {
+    if (!user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
+
+  if (!user) return null;
+
   return (
-    <div className="sidebar">
-      {/* App Title */}
-      <h2 className="sidebar-title">RealEstate CRM</h2>
+    <aside className="sidebar">
+      {/* HEADER */}
+      <div className="sidebar-header">
+        <h2>CRM</h2>
+        <p>{user.role === "admin" ? "Admin Panel" : "Client Panel"}</p>
+      </div>
 
-      {/* Navigation Links */}
+      {/* NAVIGATION */}
       <nav className="sidebar-nav">
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Dashboard
-        </NavLink>
+        {user.role === "admin" ? (
+          <>
+            <NavLink to="/dashboard">Dashboard</NavLink>
 
-        <NavLink
-          to="/owners"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Owners
-        </NavLink>
+            <NavLink to="/leads">Leads</NavLink>
+            <NavLink to="/customers">Customers</NavLink>
 
-        <NavLink
-          to="/properties"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Properties
-        </NavLink>
+            {/* ✅ OWNERS (RESTORED) */}
+            <NavLink to="/owners">Owners</NavLink>
 
-        <NavLink
-          to="/rentals"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Rentals
-        </NavLink>
-
-        <NavLink
-          to="/sales"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Sales
-        </NavLink>
-
-        <NavLink
-          to="/leads"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Leads
-        </NavLink>
-
-        <NavLink
-          to="/customers"
-          className={({ isActive }) =>
-            isActive ? "sidebar-link active" : "sidebar-link"
-          }
-        >
-          Customers
-        </NavLink>
+            <NavLink to="/properties">Properties</NavLink>
+            <NavLink to="/rentals">Rentals</NavLink>
+            <NavLink to="/sales">Sales</NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink to="/client/dashboard">Dashboard</NavLink>
+            <NavLink to="/client/my-customer">My Profile</NavLink>
+            <NavLink to="/client/leads">My Leads</NavLink>
+            <NavLink to="/client/rentals">My Rentals</NavLink>
+            <NavLink to="/client/payments">Payments</NavLink>
+          </>
+        )}
       </nav>
 
-      {/* Footer / Logout */}
-      <div className="sidebar-footer">
-        <button className="logout-btn">Logout</button>
-      </div>
-    </div>
+      {/* LOGOUT */}
+      <button
+        className="logout-btn"
+        onClick={() => {
+          localStorage.clear();
+          navigate("/", { replace: true });
+        }}
+      >
+        Logout
+      </button>
+    </aside>
   );
 };
 

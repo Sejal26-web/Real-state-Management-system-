@@ -1,31 +1,47 @@
-// Backend/Routes/rentalRoutes.js
-
 const express = require("express");
 const router = express.Router();
 
-const protect = require("../Middleware/AuthMiddleware");
+const { protect, authorize } = require("../middleware/authMiddleware");
 
 const {
   createRental,
   getRentals,
-  addRentPayment,
-  moveOut
+  getRentalById,
+  updateRental,
+  deleteRental,
+  addPayment,
+  moveOutRental,
+  getMyRentals
 } = require("../controllers/rentalController");
 
+/* =========================
+   CLIENT ROUTES (FIRST)
+========================= */
+router.get(
+  "/my",
+  protect,
+  authorize("client"),
+  getMyRentals
+);
 
-// Rental Routes
+/* =========================
+   CLIENT: PAY RENT ✅ FIX
+========================= */
+router.post(
+  "/:id/payment",
+  protect,
+  authorize("client"),
+  addPayment
+);
 
-
-// Create Rental (Admin, Agent)
-router.post("/create", protect(["admin", "agent"]), createRental);
-
-// Get All Rentals (Admin, Agent)
-router.get("/", protect(["admin", "agent"]), getRentals);
-
-// Add Rent Payment (Admin, Agent)
-router.post("/:id/payment", protect(["admin", "agent"]), addRentPayment);
-
-// Move Out / Close Rental (Admin)
-router.put("/:id/moveout", protect(["admin"]), moveOut);
+/* =========================
+   ADMIN ROUTES
+========================= */
+router.post("/", protect, authorize("admin"), createRental);
+router.get("/", protect, authorize("admin"), getRentals);
+router.get("/:id", protect, authorize("admin"), getRentalById);
+router.put("/:id", protect, authorize("admin"), updateRental);
+router.delete("/:id", protect, authorize("admin"), deleteRental);
+router.put("/:id/move-out", protect, authorize("admin"), moveOutRental);
 
 module.exports = router;

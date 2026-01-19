@@ -1,8 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const protect = require("../Middleware/AuthMiddleware");
-const { getSummary } = require("../controllers/dashboardController");
 
-router.get("/summary", protect(["admin", "agent"]), getSummary);
+const { protect, authorize } = require("../middleware/authMiddleware");
+const { getDashboardOverview } = require("../controllers/dashboardController");
+
+/* ===============================
+   DASHBOARD (ADMIN ONLY)
+=============================== */
+router.get(
+  "/",
+  protect,
+  authorize("admin"), // ✅ FIX: lowercase role
+  getDashboardOverview
+);
 
 module.exports = router;

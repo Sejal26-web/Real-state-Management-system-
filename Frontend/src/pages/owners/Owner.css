@@ -1,0 +1,258 @@
+/* =====================
+   PAGE BASE
+===================== */
+
+.page {
+  padding: 32px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* =====================
+   OWNER FORM (CREATE / EDIT)
+===================== */
+
+.owner-grid {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.owner-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+}
+
+.owner-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+/* INPUTS */
+.owner-card input,
+.owner-card select,
+.owner-card textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 14px;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+.owner-card input:focus,
+.owner-card select:focus,
+.owner-card textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* ACTIONS */
+.owner-actions .owner-card {
+  position: sticky;
+  top: 96px;
+}
+
+.primary-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #e5e7eb;
+  border: none;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* ===========================
+   OWNER LIST (TABLE ONLY)
+=========================== */
+
+.owner-list .filter-bar {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.owner-list .filter-bar input,
+.owner-list .filter-bar select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.owner-list .table-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+}
+
+.owner-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.owner-list thead th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6b7280;
+  padding: 14px 12px;
+}
+
+.owner-list tbody td {
+  padding: 16px 12px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.owner-list tbody small {
+  display: block;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.owner-list .table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.owner-list .btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.owner-list .btn.gray {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.owner-list .btn.red {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.owner-list .empty {
+  text-align: center;
+  padding: 24px;
+  color: #6b7280;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+
+@media (max-width: 1024px) {
+  .owner-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-actions .owner-card {
+    position: static;
+  }
+}
+/* =====================
+   DELETE CONFIRM MODAL
+===================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 420px;
+  padding: 28px 30px;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+.modal-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.modal-card p {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+/* Buttons inside modal */
+.modal-actions .btn {
+  padding: 10px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+/* Cancel button */
+.modal-actions .btn.gray {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* Delete button (soft, professional) */
+.modal-actions .btn.danger {
+  background: #f3f4f6;
+  color: #111827;
+}

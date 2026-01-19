@@ -1,30 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const protect = require("../Middleware/AuthMiddleware");
+
+const { protect, authorize } = require("../middleware/authMiddleware");
 
 const {
   createCustomer,
   getCustomers,
   getCustomerById,
+  getMyCustomer,
   updateCustomer,
-  addCommunicationLog,
-  addFollowUp,
-  addReferral,
   deleteCustomer
 } = require("../controllers/customerController");
 
-// Customer CRUD
-router.post("/", protect(["admin", "agent"]), createCustomer);
-router.get("/", protect(["admin", "agent"]), getCustomers);
-router.get("/:id", protect(["admin", "agent"]), getCustomerById);
-router.put("/:id", protect(["admin", "agent"]), updateCustomer);
+/* =========================
+   CLIENT ROUTE (MUST BE FIRST)
+========================= */
+router.get(
+  "/my",
+  protect,
+  authorize("client"),
+  getMyCustomer
+);
 
-// Activity tracking (Test cases 28, 29, 30)
-router.post("/:id/communications", protect(["admin", "agent"]), addCommunicationLog);
-router.post("/:id/followups", protect(["admin", "agent"]), addFollowUp);
-router.post("/:id/referrals", protect(["admin", "agent"]), addReferral);
-
-// Delete
-router.delete("/:id", protect(["admin"]), deleteCustomer);
+/* =========================
+   ADMIN CRUD
+========================= */
+router.post("/", protect, authorize("admin"), createCustomer);
+router.get("/", protect, authorize("admin"), getCustomers);
+router.get("/:id", protect, authorize("admin"), getCustomerById);
+router.put("/:id", protect, authorize("admin"), updateCustomer);
+router.delete("/:id", protect, authorize("admin"), deleteCustomer);
 
 module.exports = router;
